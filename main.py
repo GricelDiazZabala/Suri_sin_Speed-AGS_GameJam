@@ -12,7 +12,7 @@ def resource_path(relative_path):
 
 
 pygame.init()
-screen = pygame.display.set_mode((800,400))
+screen = pygame.display.set_mode((1100,700))
 
 while True:
     for event in pygame.event.get():
