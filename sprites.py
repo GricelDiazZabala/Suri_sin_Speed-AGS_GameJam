@@ -36,15 +36,19 @@ class Player(pygame.sprite.Sprite):
 		self.y_change = 0
 
 		self.facing = 'down'
+		self.animation_loop = 1
 
 		self.image = self.game.character_spritesheet.get_sprite(2, 8, self.width, self.height)
 
             
 	def update(self):
 		self.movement()
+		self.animate()
 
 		self.rect.x += self.x_change
+		self.collide_blocks('x')
 		self.rect.y += self.y_change
+		self.collide_blocks('y')
 
 		self.x_change = 0
 		self.y_change = 0
@@ -63,6 +67,67 @@ class Player(pygame.sprite.Sprite):
 		if keys[pygame.K_s]:
 			self.y_change += PLAYER_SPEED
 			self.facing = 'down'
+
+	def collide_blocks(self, direction):
+		if direction == "x":
+			hits = pygame.sprite.spritecollide(self, self.game.blocks, False)
+			if hits:
+				if self.x_change > 0:
+					self.rect.x = hits[0].rect.left - self.rect.width
+				if self.x_change < 0:
+					self.rect.x = hits[0].rect.right
+				
+		if direction == "y":
+			hits = pygame.sprite.spritecollide(self, self.game.blocks, False)
+			if hits:
+				if self.y_change > 0:
+					self.rect.y = hits[0].rect.top - self.rect.height
+				if self.y_change < 0:
+					self.rect.y = hits[0].rect.bottom
+
+	def animate(self):
+		back_animation = [self.game.character_spritesheet.get_sprite(2, 8, self.width, self.height)]
+
+		right_animations = [self.game.character_spritesheet.get_sprite(2, 16, self.width, self.height),
+					  self.game.character_spritesheet.get_sprite(2, 24, self.width, self.height)]
+
+		left_animation = [self.game.character_spritesheet.get_sprite(2, 32, self.width, self.height)]
+
+		if self.facing == "up":
+			if self.y_change == 0:
+				self.image = self.game.character_spritesheet.get_sprite(2, 8, self.width, self.height)
+			else:
+				self.image = back_animation[math.floor(self.animation_loop)]
+				self.animation_loop += 0.1
+				if self.animation_loop >= 2:
+					self.animation_loop = 1
+
+		if self.facing == "down":
+			if self.y_change == 0:
+				self.image = self.game.character_spritesheet.get_sprite(2, 16, self.width, self.height)
+			else:
+				self.image = right_animations[math.floor(self.animation_loop)]
+				self.animation_loop += 0.1
+				if self.animation_loop >= 2:
+					self.animation_loop = 1
+
+		if self.facing == "right":
+			if self.x_change == 0:
+				self.image = self.game.character_spritesheet.get_sprite(2, 16, self.width, self.height)
+			else:
+				self.image = right_animations[math.floor(self.animation_loop)]
+				self.animation_loop += 0.1
+				if self.animation_loop >= 2:
+					self.animation_loop = 1
+
+		if self.facing == "left":
+			if self.x_change == 0:
+				self.image = self.game.character_spritesheet.get_sprite(2, 32, self.width, self.height)
+			else:
+				self.image = left_animation[math.floor(self.animation_loop)]
+				self.animation_loop += 0.1
+				if self.animation_loop >= 2:
+					self.animation_loop = 1
 
 class Block(pygame.sprite.Sprite):
 	def	__init__(self, game, x, y):
