@@ -12,7 +12,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        self.character_spritesheet = Spritesheet('assets\suri\suri_spritesheet.png')
+        self.character_spritesheet = Spritesheet('assets\suri\suri_sprite_sheet.png')
         self.terrain_spritesheet = Spritesheet('assets\Pixel Art Top Down - Basic v1.2.2\Texture\TX Tileset Grass.png')
 
     def createTileMap(self):
