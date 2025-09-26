@@ -70,6 +70,7 @@ class Player(pygame.sprite.Sprite):
 		self.y_change = 0
 
 		self.attack()
+		#self.attackAnimation()
 		self.check_level_complete()
 
 	def movement(self):
@@ -123,6 +124,7 @@ class Player(pygame.sprite.Sprite):
 	def attack(self):
 		keys = pygame.key.get_pressed()
 		now = pygame.time.get_ticks()
+
 		
 		if keys[pygame.K_SPACE] and now - self.last_attack > ATTACK_COOLDOWN:
 			self.last_attack = now
@@ -135,6 +137,18 @@ class Player(pygame.sprite.Sprite):
 				Attack(self.game, self.rect.x - TILESIZE, self.rect.y)
 			elif self.facing == 'right':
 				Attack(self.game, self.rect.x + TILESIZE, self.rect.y)
+
+	# def attackAnimation(self):
+	# 	fire_animations = [self.game.suriAtq_spritesheet.get_sprite(26, 15, self.width, self.height),
+	# 				 self.game.suriAtq_spritesheet.get_sprite(156, 15, self.width, self.height),
+	# 				 self.game.suriAtq_spritesheet.get_sprite(281, 15, self.width, self.height),
+	# 				 self.game.suriAtq_spritesheet.get_sprite(538, 15, self.width, self.height)]
+		
+	# 	self.image = self.game.character_spritesheet.get_sprite(1, 31, self.width, self.height)
+	# 	self.image = fire_animations[math.floor(self.animation_loop)]
+	# 	self.animation_loop += 0.1
+	# 	if self.animation_loop >= 4:
+	# 		self.animation_loop = 1
 
 	def check_level_complete(self):
 		if len(self.game.enemies) == 0 and len(self.game.items) == 0:
@@ -212,6 +226,8 @@ class Enemy(pygame.sprite.Sprite):
 		self.x_change = 0
 		self.y_change = 0
 
+		self.animation_loop = 1
+
 		self.image = pygame.Surface([self.width, self.height])
 		self.image.fill(RED)
 		self.rect = self.image.get_rect()
@@ -223,6 +239,7 @@ class Enemy(pygame.sprite.Sprite):
 
 	def update(self):
 		self.auto_move()
+		self.animate()
 		
 		self.rect.x += self.x_change
 		self.collide_blocks('x')
@@ -268,6 +285,18 @@ class Enemy(pygame.sprite.Sprite):
 					self.rect.y = hits[0].rect.bottom
 				self.direction = random.choice(['left', 'right', 'up', 'down'])
 				self.move_counter = 0
+
+	def animate(self):
+		right_animations = [self.game.enemy_spritesheet.get_sprite(51, 55, self.width, self.height),
+					 self.game.enemy_spritesheet.get_sprite(237, 55, self.width, self.height),
+					 self.game.enemy_spritesheet.get_sprite(423, 55, self.width, self.height),
+					 self.game.enemy_spritesheet.get_sprite(615, 55, self.width, self.height)]
+		
+		self.image = self.game.character_spritesheet.get_sprite(1, 31, self.width, self.height)
+		self.image = right_animations[math.floor(self.animation_loop)]
+		self.animation_loop += 0.1
+		if self.animation_loop >= 4:
+			self.animation_loop = 1
 
 class Item(pygame.sprite.Sprite):
 	def __init__(self, game, x, y):

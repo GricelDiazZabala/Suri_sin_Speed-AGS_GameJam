@@ -14,6 +14,8 @@ class Game:
 
 
         self.character_spritesheet = Spritesheet('assets\suri\suri_sprite_sheet.png')
+        self.enemy_spritesheet = Spritesheet('assets\otros\Torch_Purple.png')
+        self.suriAtq_spritesheet = Spritesheet('assets\suri\Fire.png')
         self.terrain_spritesheet = Spritesheet('assets\Pixel Art Top Down - Basic v1.2.2\Texture\TX Tileset Grass.png')
         self.props_spritesheet = Spritesheet('assets\Pixel Art Top Down - Basic v1.2.2\Texture\TX Props.png')
         self.speed_img = pygame.image.load('assets\otros\SPEED.png').convert_alpha()     
@@ -106,8 +108,8 @@ class Game:
 
     def show_level_transition(self):
         transition = True
-        level_text = self.custom_font.render(f'Nivel {self.current_level + 1}', True, WHITE)
-        continue_text = self.custom_font.render('PPresiona cualquier tecla para continuar', True, WHITE)
+        level_text =  custom_font.render(f'Nivel {self.current_level + 1}', True, WHITE)
+        continue_text = custom_font.render('Presiona cualquier tecla para continuar', True, WHITE)
         
         while transition:
             for event in pygame.event.get():
@@ -126,8 +128,8 @@ class Game:
 
     def game_completed(self):
         completed = True
-        congrats_text = self.custom_font.render('¡Completaste todos los niveles', True, YELLOW)
-        restart_text = self.custom_font.render('Apretá R para reiniciar o Q para salir', True, YELLOW)
+        congrats_text = custom_font.render('¡Completaste todos los niveles!', True, YELLOW)
+        restart_text = custom_font.render('Apretá R para reiniciar o Q para salir', True, YELLOW)
         
         while completed:
             for event in pygame.event.get():
@@ -151,7 +153,7 @@ class Game:
             self.clock.tick(FPS)
 
     def game_over(self):
-        text = self.custom_font.render('Game Over', True, RED)
+        text = custom_font.render('Game Over', True, RED)
         text_rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
         restart_button = Button(10, SCREEN_HEIGHT - 60, 120, 50, WHITE, BLACK, 'Reiniciar')
