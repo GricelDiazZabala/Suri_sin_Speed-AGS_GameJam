@@ -1,7 +1,6 @@
 import pygame
 from config import *
 import math
-import random
 
 class Spritesheet:
 	def __init__(self, file):
@@ -142,6 +141,7 @@ class Player(pygame.sprite.Sprite):
 				if self.animation_loop >= 4:
 					self.animation_loop = 1
 
+			
 class Block(pygame.sprite.Sprite):
 	def	__init__(self, game, x, y):
 		self.game = game
